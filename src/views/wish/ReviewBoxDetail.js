@@ -11,6 +11,7 @@ const ReviewBoxDetail = () => {
     const navigate = useNavigate(); // 프로그래밍 방식으로 라우팅을 위한 hook
     const [myReviewDetails, setMyReviewDetails] = useState(null); // 리뷰 상세 정보 상태
     const [starRating, setStarRating] = useState(0); // 초기 별점을 0으로 설정
+    const token = localStorage.getItem('authToken');
 
     useEffect(() => {
         // rvId를 이용하여 리뷰 상세 정보를 가져오는 함수 호출
@@ -19,7 +20,8 @@ const ReviewBoxDetail = () => {
 
     // rvId에 해당하는 리뷰 상세 정보를 가져오는 함수
     const fetchReviewDetail = (rvId) => {
-        axios.get(`/wish/myReviewList/ReviewBoxDetail/${rvId}`)
+        axios.get(`/wish/myReviewList/ReviewBoxDetail/${rvId}`,
+            { headers: { 'Authorization': `Bearer ${token}` } })
             .then(response => {
                 console.log("리뷰 상세 정보:", response.data); // 콘솔에 출력
                 const data = response.data;
@@ -43,7 +45,8 @@ const ReviewBoxDetail = () => {
 
     // 리뷰 삭제 알림 및 페이지 이동
     const deleteMyReviewBox = () => {
-        axios.delete(`/wish/myReviewList/delete`, { params: { rvId } })
+        axios.delete(`/wish/myReviewList/delete`, { params: { rvId } } ,
+            { headers: { 'Authorization': `Bearer ${token}` } })
             .then(response => {
                 alert('삭제 완료되었습니다.');
                 navigate(`/wish/myReviewList`); // 삭제 후 목록 페이지로 이동

@@ -11,6 +11,7 @@ const MyReviewBoxUpdate = () => {
     const navigate = useNavigate();
     const [myReviewDetails, setMyReviewDetails] = useState(null); // 리뷰 상세 정보 상태
     const [starRating, setStarRating] = useState(0); // 초기 별점을 0으로 설정
+    const token = localStorage.getItem('authToken');
 
     useEffect(() => {
         // rvId를 이용하여 리뷰 상세 정보를 가져오는 함수 호출
@@ -18,7 +19,8 @@ const MyReviewBoxUpdate = () => {
     }, [rvId]); // rvId가 변경될 때마다 useEffect가 실행됩니다.
 
     const fetchReviewDetailUpdate = (rvId) => {
-        axios.get(`/wish/myReviewList/ReviewBoxDetail/${rvId}`)
+        axios.get(`/wish/myReviewList/ReviewBoxDetail/${rvId}`,
+            { headers: { 'Authorization': `Bearer ${token}` } })
             .then(response => {
                 console.log("리뷰 상세 정보:", response.data); // 콘솔에 출력
                 const data = response.data;
@@ -49,7 +51,8 @@ const MyReviewBoxUpdate = () => {
             rvStar: starRating
         };
 
-        axios.post(`/wish/MyReviewBoxUpdate/${rvId}`, updatedReview)
+        axios.post(`/wish/MyReviewBoxUpdate/${rvId}`, updatedReview,
+            { headers: { 'Authorization': `Bearer ${token}` } })
             .then(response => {
                 alert("수정이 완료되었습니다.");
                 navigate(`/wish/myReviewList/ReviewBoxDetail/${rvId}`); // 템플릿 리터럴을 사용하여 변수를 포함한 URL로 이동

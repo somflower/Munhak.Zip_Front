@@ -7,9 +7,14 @@ import axios from 'axios';
 import { Oval } from 'react-loader-spinner';
 import Modal from '../components/Modal/Modal';
 import Interest from '../components/interest/Interest';
+import axiosInstance from '../axiosConfig';
 
 function Header(props) {
+    const token = localStorage.getItem('accessToken');
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
     console.log('props', props, props.title);
+
     return (
         <header>
             <h1>
@@ -96,6 +101,7 @@ function App() {
     const [searchResults, setSearchResults] = useState([]);
     const [wishMovies, setWishMovies] = useState([]);
     const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+    const token = localStorage.getItem('authToken');
 
     const topics = [
         { id: 1, title: '보관함', body: 'wish is...' },
@@ -112,10 +118,7 @@ function App() {
         const userId = localStorage.getItem('userId');
         axios
             .get('/main/recommend', {
-                params: {
-                    userId: userId,
-                },
-            })
+                params: { userId: userId, }, })
             .then((response) => {
                 const recommendationResults = response.data;
                 setRecommendationResults(recommendationResults);
@@ -145,10 +148,7 @@ function App() {
         const userId = localStorage.getItem('userId');
         axios
             .get('http://localhost:3000/movie/wish', {
-                params: {
-                    userId: userId,
-                },
-            }) // 보관함 영화를 가져오는 API 호출
+                params: { userId: userId, }, }) // 보관함 영화를 가져오는 API 호출
             .then((response) => {
                 const wishMovies = response.data;
                 console.log("Fetched wish movies:", wishMovies); // 콘솔에 보관함 영화 출력

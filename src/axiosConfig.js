@@ -16,4 +16,18 @@ axiosInstance.interceptors.response.use(
     }
 );
 
+// 요청 인터셉터 추가
+axiosInstance.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('authToken'); // 토큰 가져오기
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`; // 토큰이 있을 때만 추가
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
 export default axiosInstance;

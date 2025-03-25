@@ -10,6 +10,7 @@ const WishReviewList = () => {
     const navigate = useNavigate();
     const [userId, setUserId] = useState('');
     const [wishReviewList, setWishReviewList] = useState(location.state || []);
+    const token = localStorage.getItem('authToken');
 
     useEffect(() => {
         const storedUserId = localStorage.getItem('userId');
@@ -22,7 +23,8 @@ const WishReviewList = () => {
     }, []);
 
     const fetchWishReviewList = (userId) => {
-        axios.get('/wish/reviews', { params: { userId: userId } })
+        axios.get('/wish/reviews', { params: { userId: userId } },
+            { headers: { 'Authorization': `Bearer ${token}` } })
             .then(response => {
                 const wishReviewData = response.data.map(review => ({
                     ...review,

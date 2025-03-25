@@ -13,27 +13,28 @@ const Wish = () => {
     const [movies, setMovies] = useState([]);
     const [reviews, setReviews] = useState([]);
     const [myReviews, setMyReviews] = useState([]);
+    const token = localStorage.getItem('authToken');
 
     const moviesPerPage = 2;
     const reviewsPerPage = 2;
     const myReviewsPerPage = 2;
 
     useEffect(() => {
-        axios.get('http://localhost:8080/wish/movies', { withCredentials: true })
+        axios.get('http://localhost:8080/wish/movies', { withCredentials: true }, { headers: { 'Authorization': `Bearer ${token}` } })
             .then(response => {
                 console.log('Wish movies:', response.data);
                 setMovies(response.data);
             })
             .catch(error => console.error('Error fetching wish movies:', error));
 
-        axios.get('http://localhost:8080/wish/reviews', { withCredentials: true })
+        axios.get('http://localhost:8080/wish/reviews', { withCredentials: true }, { headers: { 'Authorization': `Bearer ${token}` } })
             .then(response => {
                 console.log('Wish reviews:', response.data);
                 setReviews(response.data);
             })
             .catch(error => console.error('Error fetching wish reviews:', error));
 
-        axios.get('http://localhost:8080/wish/myreviews', { withCredentials: true })
+        axios.get('http://localhost:8080/wish/myreviews', { withCredentials: true }, { headers: { 'Authorization': `Bearer ${token}` } })
             .then(response => {
                 console.log('My reviews:', response.data);
                 setMyReviews(response.data);

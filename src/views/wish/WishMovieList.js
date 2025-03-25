@@ -9,11 +9,13 @@ const WishMovieList = () => {
     const navigate = useNavigate();
     const [currentMoviePage, setCurrentMoviePage] = useState(0);
     const [movies, setMovies] = useState([]);
+    const token = localStorage.getItem('authToken');
 
     const moviesPerPage = 4;
 
     useEffect(() => {
-        axios.get('http://localhost:8080/wish/movies', { withCredentials: true })
+        axios.get('http://localhost:8080/wish/movies', { withCredentials: true },
+            { headers: { 'Authorization': `Bearer ${token}` } })
             .then(response => {
                 console.log('Wish movies:', response.data);
                 setMovies(response.data);
